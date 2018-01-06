@@ -1,0 +1,142 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i> New Customer<br />
+        <small class=''>Fields marked with <span style='color: red'>'*'</span> are required!</small>
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+         action="/customers/{{idType}}-{{idNumber}}/create-customer" method="post" enctype="multipart/form-data">
+         {% include 'includes/alerts.twig' %}
+        <h3>Basic Details</h3>
+        <hr />
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('idType') ? 'error' : '')}}" id="idType">
+                <label for="">ID Type *</label>
+                <select class="input-xlarge" disabled=''>
+                    <option value="NRC" {{(idType == 'NRC' ? "selected=''" : '')}}>NRC</option>
+                    <option value="PASSPORT" {{(idType == 'PASSPORT' ? "selected=''" : '')}}>Passport</option>
+                    <option value="DRIVERS_LICENSE" {{(idType == 'DRIVERS_LICENSE' ? "selected=''" : '')}}>Drivers License</option>
+                </select>
+                <input type="hidden" class="input-xlarge"
+                    name='idType' 
+                    value='{{ idType }}' />
+                <span id="" class="help-block">{{oldInput.error('idType')}}</span>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('idNumber') ? 'error' : '')}}" id="id-number">
+                <label for="">ID Number *</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="ID Number"
+                        value='{{ idNumber }}' disabled='' />
+
+                <input type="hidden" class="input-xlarge"
+                    name='idNumber' 
+                    value='{{ idNumber }}' />
+                <span id="" class="help-block">{{oldInput.error('idNumber')}}</span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('firstName') ? 'error' : '')}}" id="contact-email">
+                <label for="">First Name</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="First Name" name='firstName'
+                        value="{{oldInput.value('firstName')}}" />
+                <span id="" class="help-block">{{oldInput.error('firstName')}}</span>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('middleName') ? 'error' : '')}}" id="middle-name">
+                <label for="">Middle Name</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="Middle Name" name='middleName' 
+                        value="{{oldInput.value('middleName')}}" />
+                <span id="" class="help-block">{{oldInput.error('middleName')}}</span>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('lastName') ? 'error' : '')}}" id="last-name">
+                <label for="">Last Name *</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="Last Name" name='lastName' 
+                        value="{{oldInput.value('lastName')}}" />
+                <span id="" class="help-block">{{oldInput.error('lastName')}}</span>
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <h3>Contact and Address Details</h3>
+        <hr />
+        <div class="row-fluid">
+            
+            <div class="control-group span3 {{(oldInput.hasError('mobile1') ? 'error' : '')}}" id="contact-mobile">
+                <label for="">Mobile *</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="Contact Mobile" name='mobile1'
+                        value="{{oldInput.value('mobile1')}}" />
+                <span id="" class="help-block">{{oldInput.error('mobile1')}}</span>
+            </div>
+
+            <div class="control-group span3 {{(oldInput.hasError('email1') ? 'error' : '')}}" id="contact-email">
+                <label for="">Email</label>
+                <input type="email" class="input-xlarge"
+                        placeholder="Contact Email" name='email1'
+                        value="{{oldInput.value('email1')}}" />
+                <span id="" class="help-block">{{oldInput.error('email1')}}</span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('companyName') ? 'error' : '')}}" id="company-name">
+                <label for="">Company Name *</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="Company Name" name='companyName'
+                        value="{{oldInput.value('companyName')}}" />
+                <span id="" class="help-block">{{oldInput.error('companyName')}}</span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span9 {{(oldInput.hasError('addressLine1') ? 'error' : '')}}" id="address">
+                <label for="">Address *</label>
+                <input type="text" class="span12"
+                        placeholder="Address" name='addressLine1'
+                        value="{{oldInput.value('addressLine1')}}" />
+                <span id="" class="help-block">{{oldInput.error('addressLine1')}}</span>
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <h3>Customer Documents</h3>
+        <hr />
+        <div class="row-fluid">
+            {% for documentRequirement in documentRequirements %}
+            <div class="span3" style="color: #000;">
+                <label for="">{{documentRequirement.document_name}} {{documentRequirement.is_required == '1' ? '*' : ''}}</label>
+                <input type="file" class=""
+                    name='{{documentRequirement.document_code}}' /><br />
+                <span id="" class="help-block" style='color: red; font-weight: bold;'>{{oldInput.error(documentRequirement.document_code)}}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <br />
+        <br />
+
+        <div class="row-fluid">
+            <div class="control-group span3">
+                <a type="submit" href='/customer-loans/open-new-loan' class="btn btn-danger">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

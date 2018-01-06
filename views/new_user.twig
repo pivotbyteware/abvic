@@ -1,0 +1,114 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i> New User<br />
+        <small class=''>Fields marked with <span style='color: red'>'*'</span> are required!</small>
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+         action="/users/new" method="post">
+         {% include 'includes/alerts.twig' %}
+        <h3>User Details</h3>
+        <hr />
+        
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('loginId') ? 'error' : '')}}" id="user-id">
+                <label for="">User ID</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="Unique User ID" name='loginId'
+                        value="{{oldInput.value('loginId')}}" />
+                <span id="" class="help-block">{{oldInput.error('loginId')}}</span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('firstName') ? 'error' : '')}}" id="first-name">
+                <label for="">First Name</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="First Name" name='firstName'
+                        value="{{oldInput.value('firstName')}}" />
+                <span id="" class="help-block">{{oldInput.error('firstName')}}</span>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('lastName') ? 'error' : '')}}" id="last-name">
+                <label for="">Last Name *</label>
+                <input type="text" class="input-xlarge"
+                        placeholder="Last Name" name='lastName' 
+                        value="{{oldInput.value('lastName')}}" />
+                <span id="" class="help-block">{{oldInput.error('lastName')}}</span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('userRole') ? 'error' : '')}}" id="userRole">
+                <label for="">User Role *</label>
+                <select class="input-xlarge" name='userRole' onChange="if($(this).val() == 'SYSTEM_ADMIN'){$('#branch').hide();}else{$('#branch').show();}">
+                    {% for role in userRolesDescs %}
+                    <option value="{{ userRolesCodes[role] }}" {{ oldInput.value('userRole') == userRolesCodes[role] ? "selected=''" : '' }}>{{ role }}</option>
+                    {% endfor %}
+                </select>
+                <span id="" class="help-block">{{oldInput.error('userRole')}}</span>
+            </div>
+
+            <div class="control-group span3 {{(oldInput.hasError('branch') ? 'error' : '')}}" id="branch">
+                <label for="">User Branch *</label>
+                <select class="input-xlarge" name='branch'>
+                    {% for branch in branches %}
+                    <option value="{{ branch.id }}" {{ oldInput.value('branch') == branch.id ? "selected=''" : '' }}>{{ branch.branch_name }}</option>
+                    {% endfor %}
+                </select>
+                <span id="" class="help-block">{{oldInput.error('branch')}}</span>
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <h3>User Authentication</h3>
+        <hr />
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('password') ? 'error' : '')}}" id="password">
+                <label for="">Create Password</label>
+                <input type="password" class="input-xlarge"
+                        placeholder="Password" name='password'
+                        value="{{oldInput.value('password')}}" />
+                <span id="" class="help-block">{{oldInput.error('password')}}</span>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('confirmPassword') ? 'error' : '')}}" id="password-confirm">
+                <label for="">Confirm Password *</label>
+                <input type="password" class="input-xlarge"
+                        placeholder="Confirm Password" name='confirmPassword' 
+                        value="{{oldInput.value('confirmPassword')}}" />
+                <span id="" class="help-block">{{oldInput.error('confirmPassword')}}</span>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('changePasswordAtLogon') ? 'error' : '')}}" id="change-password-at-logon">
+                <label class="checkbox">
+                    <input type="checkbox" value='1' name='changePasswordAtLogon' checked=''><span class="metro-checkbox">User must change password at logon</span>
+                </label>
+                <span id="" class="help-block">{{oldInput.error('changePasswordAtLogon')}}</span>
+            </div>
+        </div>
+        <br />
+        <br />
+
+        <div class="row-fluid">
+            <div class="control-group span3">
+                <a href='/users' class="btn btn-danger">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

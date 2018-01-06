@@ -1,0 +1,61 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb; padding: 10px;'>
+    {% include 'includes/alerts.twig' %}
+        
+    <h4>Loan Payments Authorizations</h4>
+    <hr />
+    <table class='table table-striped table-bordered bg-white' style='font-size: 12px;'>
+        <thead>
+            <tr>
+                <th>Loan Number</th>
+                <th>Customer Name</th>
+                <th>Loan Amount</th>
+                <th>Interest Rate</th>
+                <th>Interest Amount</th>
+                <th>Total Amount</th>
+                <th>Payment Creator</th>
+                <th>Payment Date</th>
+                <th>Payment Type</th>
+                <th>Payment Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for authorizationRequest in authorizationRequests %}
+                <tr>
+                    <td>{{authorizationRequest.loan_reference_number}}</td>
+                    <td>{{authorizationRequest.customer_name}}</td>
+                    <td>{{authorizationRequest.investment_amount}}</td>
+                    <td>{{authorizationRequest.interest_rate}}%</td>
+                    <td>{{authorizationRequest.interest_amount}}</td>
+                    <td>{{authorizationRequest.total_amount}}</td>
+                    <td>{{authorizationRequest.initiator}}</td>
+                    <td>{{authorizationRequest.payment_initiation_date}}</td>
+                    <td>{{authorizationRequest.payment_mode}}</td>
+                    <td>{{authorizationRequest.payment_amount}}</td>
+                    <td class="align-center">
+                        <div class="dropdown">
+                            <span class="hover-cursor-pointer" class="dropdown-toggle" data-toggle="dropdown">Action <b class="caret"></b></span>
+                            <ul class="dropdown-menu align-left" role="menu" aria-labelledby="dLabel">
+                                <li><a tabindex="-1" href='/customer-loans/payment-authorizations/{{authorizationRequest.auth_request_id}}/details'>Details</a></li>
+                                <li><a tabindex="-1" href="/customer-loans/payment-authorizations/{{authorizationRequest.auth_request_id}}/confirm-authorization">Approve</a></li>
+                                <li><a tabindex="-1" href="/customer-loans/payment-authorizations/{{authorizationRequest.auth_request_id}}/decline-authorization">Decline</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        
+    </script>
+{% endblock %}

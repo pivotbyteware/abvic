@@ -1,0 +1,179 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i> Customer Loan Payment<br />
+        <small class=''>Fields marked with <span style='color: red'>'*'</span> are required!</small>
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+        action="/customer-loans/new-payment/{{customer.id}}/init-payment-for-auth" method="post">
+
+        {% include 'includes/alerts.twig' %}
+        <div class="row-fluid">
+            <div class="span6">
+                <h3>Customer Details</h3>
+                <hr />
+                <div class="row-fluid">
+                    <div class="control-group span6" id="">
+                        <label for="">ID Number</label>
+                        <input type="text" class="input-xlarge" 
+                            value="{{idTypes[customer.id_type]}} / {{customer.id_number}}"
+                            disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span12" id="">
+                        <label for="">Customer Name</label>
+                        <input type="text" class="span12" 
+                            value="{{customer.first_name}} {{customer.middle_name}} {{customer.last_name}}"
+                            disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6" id="">
+                        <label for="">Phone/Mobile</label>
+                        <input type="text" class="input-xlarge" 
+                            value="{{customer.mobile1}}"
+                            disabled='' />
+                    </div>
+                    <div class="control-group span6" id="">
+                        <label for="">Email Address</label>
+                        <input type="text" class="input-xlarge" 
+                        value="{{customer.email1}}"
+                        disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span12" id="">
+                        <label for="">Physical Address</label>
+                        <input type="text" class="span12" 
+                            value="{{customer.address_line1}}"
+                            disabled='' />
+                    </div>
+                </div>
+            </div>
+            <div class="span6">
+
+                <h3>Outstanding Settlement</h3>
+                <hr />
+                <div class="row-fluid">
+                    <div class="control-group span6 " id="bank-account-sort-code">
+                        <label for="">Sort Code</label>
+                        <input type="text" class="input-xlarge"
+                                value="{{ activeLoan.customer_bank_account_sort_code }}"
+                                disabled='' />
+                    </div>
+                    <div class="control-group span6" id="bank-account-number">
+                        <label for="">Account Number</label>
+                        <input type="text" class="input-xlarge"
+                                value="{{ activeLoan.customer_bank_account_number }}"
+                                disabled='' />
+                    </div>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="control-group span6 " id="loanType">
+                        <label for="">Loan Type</label>
+                        <input type="text" class="input-xlarge"
+                                value="{{ activeLoan.loan_type }}"
+                                disabled='' />
+                    </div>
+
+                    <div class="control-group span6" id="loan-duration">
+                        <label for="">Loan Duration</label>
+                        <input type="text" class="input-xlarge"
+                                value="{{ activeLoanInvestment.investment_duration }}"
+                                disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6 success" id="loan-amount">
+                        <label for="">Loan Amount</label>
+                       <input type="text" class="input-xlarge"
+                                value="{{ activeLoanInvestment.investment_amount }}"
+                                disabled='' />
+                    </div>
+                    <div class="control-group span6 success" id="interest-rate">
+                        <label for="">Interest Rate (%)</label>
+                        <input type="text" class="input-xlarge"
+                                value="{{ activeLoanInvestment.interest_rate }}"
+                                disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6 success" id="loan-amount">
+                        <label for="">Interest Amount</label>
+                       <input type="text" class="input-xlarge"
+                                value="{{ activeLoanInvestment.interest_amount }}"
+                                disabled='' />
+                    </div>
+                    <div class="control-group span6 warning" id="interest-rate">
+                        <label for="">Total Amount</label>
+                        <input type="text" class="input-xlarge" style='font-weight: bold;'
+                                value="{{ activeLoanInvestment.total_amount }}"
+                                disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6 success" id="repayment-date">
+                        <label for="">Repayment Date</label>
+                        <input type="text" class="input-xlarge"
+                                value="{{ activeLoanInvestment.repayment_date }}"
+                                disabled='' />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <h3>Payment Details</h3>
+                <hr />
+            </div>
+            <div class="row-fluid">
+                <div class="control-group span3" id="payment-type">
+                    <label for="">Payment Mode *</label>
+                    <select class="input-xlarge" name='paymentType'>
+                        <option value="CASH" {{(oldInput.value('paymentType') == 'CASH' ? "selected=''" : '')}}>Cash</option>
+                        <option value="DDACC" {{(oldInput.value('paymentType') == 'DDACC' ? "selected=''" : '')}}>DDACC</option>
+                    </select>
+                    <span id="" class="help-block"></span>
+                </div>
+                <div class="control-group span3 {{(oldInput.hasError('paymentAmount') ? 'error' : '')}}" id="payment-amount">
+                    <label for="">Payment Amount *</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge"
+                                placeholder="Payment Amount" name="paymentAmount" 
+                                value="{{(oldInput.value('paymentAmount') > 0 ? oldInput.value('paymentAmount') : '0')}}" 
+                                onfocus="if($(this).val().trim() == '' || $(this).val().trim() == '0'){$(this).val('')}" 
+                                onblur="if($(this).val().trim() == ''){$(this).val('0')}">
+                                
+                        <span id="" class="help-block">{{oldInput.error('paymentAmount')}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span6">
+                <a type="submit" href='/customer-loans/new-payment' class="btn btn-danger">Cancel</a>
+                <button type="submit" class="btn btn-primary">Send for Authorization</button>
+            </div>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

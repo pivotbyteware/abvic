@@ -1,0 +1,58 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i> Callover Report<br />
+        <small class=''>Fields marked with <span style='color: red'>'*'</span> are required!</small>
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+        action="/reports/callover/init-params" method="post">
+        {% include 'includes/alerts.twig' %}
+        
+        <h3>Report Parameters</h3>
+        <hr />
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('startDate') ? 'error' : '')}}">
+                <label for="">Start Date *</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge datepicker"
+                            placeholder="Start Date" name="startDate" 
+                            value="">
+                            
+                    <span id="" class="help-block">{{oldInput.error('startDate')}}</span>
+                </div>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('endDate') ? 'error' : '')}}">
+                <label for="">End Date *</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge datepicker"
+                            placeholder="End Date" name="endDate" 
+                            value="">
+                            
+                    <span id="" class="help-block">{{oldInput.error('endDate')}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span3">
+                <button type="submit" class="btn btn-primary"><i class='icon-search'></i> Search...</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

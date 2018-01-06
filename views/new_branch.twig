@@ -1,0 +1,55 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h3>New Branch</h3>
+    <br />
+    <form class="input-form bg-white card" autocomplete="off" style='padding: 30px 20px 20px 20px'
+        action="/branches/new" method="post">
+
+        {% include 'includes/alerts.twig' %}
+
+        <div class="row-fluid">
+            <div class="control-group span3 {{(oldInput.hasError('branchCode') ? 'error' : '')}}" id="">
+                <label for="">Branch Code *</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge"
+                            placeholder="Branch Code" name="branchCode" 
+                            value="{{oldInput.value('branchCode')}}">
+                            
+                    <span id="" class="help-block">{{oldInput.error('branchCode')}}</span>
+                </div>
+            </div>
+
+            <div class="control-group span3 {{(oldInput.hasError('branchName') ? 'error' : '')}}" id="">
+                <label for="">Branch Name *</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge"
+                            placeholder="Branch Name" name="branchName" 
+                            value="{{oldInput.value('branchName')}}">
+                            
+                    <span id="" class="help-block">{{oldInput.error('branchName')}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span3">
+                <a href='/branches' class="btn btn-danger">Cancel</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

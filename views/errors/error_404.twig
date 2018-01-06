@@ -1,0 +1,20 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class='container-fluid'>
+    <div class="span12 bg-white">
+        <h2 style='padding: 10px;'>
+            Oops! We could not find the page you are looking for. 
+            <br />
+            Are you probably lost?
+        </h2> 
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        
+    </script>
+{% endblock %}

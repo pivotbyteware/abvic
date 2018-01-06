@@ -1,0 +1,47 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i>Customer Loan Payment: Select Authorizer<br />
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+        action="/customer-loans/new-payment/{{customer.id}}/send-for-auth" method="post">
+        {% include 'includes/alerts.twig' %}
+        
+        <h3>Available Authorizers</h3>
+        <hr />
+        <div class="row-fluid">
+            <div class="control-group span3" id="id-type">
+                <label for="">Select Authorizer *</label>
+                <select class="input-xlarge" name='authorizer'>
+                    {% for authorizer in authorizers %}
+                    <option value="{{authorizer.id}}">{{authorizer.first_name}} {{authorizer.last_name}}</option>
+                    {% endfor %}
+                </select>
+                <span id="" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span3">
+                <a href='/customer-loans/new-payment/{{customer.id}}' class='btn btn-primary'>Back</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

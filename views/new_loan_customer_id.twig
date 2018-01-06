@@ -1,0 +1,57 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i> Open New Customer Loan<br />
+        <small class=''>Fields marked with <span style='color: red'>'*'</span> are required!</small>
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+        action="/customer-loans/open-new-loan/validate-id-number" method="post">
+        {% include 'includes/alerts.twig' %}
+        
+        <h3>Customer ID Details</h3>
+        <hr />
+        <div class="row-fluid">
+            <div class="control-group span3" id="id-type">
+                <label for="">ID Type *</label>
+                <select class="input-xlarge" name='idType'>
+                    <option value="NATIONAL_ID" {{(oldInput.value('idType') == 'NATIONAL_ID' ? "selected=''" : '')}}>National ID</option>
+                    <!--<option value="PASSPORT" {{(oldInput.value('idType') == 'PASSPORT' ? "selected=''" : '')}}>Passport</option>
+                    <option value="DRIVERS_LICENSE" {{(oldInput.value('idType') == 'DRIVERS_LICENSE' ? "selected=''" : '')}}>Drivers License</option>-->
+                </select>
+                <span id="" class="help-block"></span>
+            </div>
+            <div class="control-group span3 {{(oldInput.hasError('idNumber') ? 'error' : '')}}" id="id-number">
+                <label for="">ID Number *</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge"
+                            placeholder="ID Number" name="idNumber" 
+                            value="">
+                            
+                    <span id="" class="help-block">{{oldInput.error('idNumber')}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span3">
+                <button type="submit" class="btn btn-primary">Validate</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

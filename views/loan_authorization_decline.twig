@@ -1,0 +1,47 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+        action="/customer-loans/loan-authorizations/{{authRequestId}}/decline" method="post">
+        {% include 'includes/alerts.twig' %}
+        
+        <div class="row-fluid">
+            <div class="span12">
+                <p style='font-size: 14px;'>
+                    Before proceeding, please provide remarks describing your reason(s) for declining. 
+                </p>
+                <br />
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span12 {{(oldInput.hasError('remarks') ? 'error' : '')}}" id="remarks">
+                <label for="">Remarks *</label>
+                <div class="controls">
+                    <textarea class="span6" rows="15"
+                            placeholder="Provide your decline reason/remarks here..." 
+                            name="remarks" r></textarea>
+                            
+                    <span id="" class="help-block">{{oldInput.error('remarks')}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="control-group span12">
+                <a href='/customer-loans/loan-authorizations/{{authRequestId}}/details' 
+                    class='btn btn-danger'><i class='icon-cross'></i> Cancel</a> &nbsp; &nbsp;
+                <button type="submit" class="btn btn-primary">Decline</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+    
+    </script>
+{% endblock %}

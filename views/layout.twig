@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Abvic Loan Manager</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+
+{% block css %}
+
+<link href="/plugins/bootmetro/css/min/bootmetro.min.css" rel="stylesheet">
+<link href="/plugins/bootmetro/css/min/bootmetro-icons.min.css" rel="stylesheet">
+<link href="/plugins/bootmetro/css/min/bootmetro-responsive.min.css" rel="stylesheet">
+<link href="/plugins/bootmetro/css/min/bootmetro-ui-light.min.css" rel="stylesheet">
+<link href="/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<link href="/css/app.css" rel="stylesheet" />
+{% endblock %}
+</head>
+<body>
+
+<div class="row-fluid">
+    <div class="">
+        
+        <div class="navbar">
+            <div class="navbar-inner app-title-bar">
+                <div class='span10 offset1'>
+                    <a class="brand" href="#">
+                        <img src="/img/abvic-logo-1.jpeg" style="height: 30px" alt="Abvic Loan Manager" />
+                    </a>
+
+                    {% if authUser %}
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{authUser.screen_name}} <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/my-profile/change-password">Change Password</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
+
+                    <ul class="nav pull-right">
+                        <li class=""><a href="#"><i class="icon-help"></i> Help</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            {% if authUser %}
+            <div class="navbar-inner app-menu-bar">
+                <div class='span10 offset1'>
+                    <a class="brand" href="/">Abvic Loan Manager</a>
+                    <ul class="nav">
+                        <li class="active"><a href="/">Workspace</a></li>
+
+                        {% if authUser.user_role == 'SYSTEM_ADMIN' %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Maintenance <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/branches">Branches</a></li>
+                                <li><a href="/users">Users</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if authUser.user_role == 'BRANCH_TELLER' %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Customer Loans <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/customer-loans/open-new-loan">Open New Loan</a></li>
+                                <li><a href="/customer-loans/new-payment">New Loan Payment</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Customers <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Search</a></li>
+                            </ul>
+                        </li>
+
+                        {% if authUser.user_role == 'BRANCH_SUPERVISOR' %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Authorizations <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/customer-loans/loan-authorizations">Loan Authorizations</a></li>
+                                <li><a href="/customer-loans/payment-authorizations">Payment Authorizations</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/reports/callover">Callover Report</a></li>
+                                <li><a href="/reports/balance-listing">Balance Listing Report</a></li>
+                                <li><a href="/reports/interest-collection">Interest Collection Report</a></li>
+                                <li><a href="/reports/ddacc-payments">DDACC Payments</a></li>
+                                <li><a href="/reports/matured-loans">Matured Loans</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+<div class='container-fluid'>
+  <div class="row-fluid">
+    <div class='span10 offset1' style="">
+        {% block pageContent %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+<div class='container-fluid'>
+  <div class="row-fluid">
+        <div class="span10 offset1">
+            <div class="navbar navbar-default">
+                <div class="container pull-right">
+                    <p class="navbar-text">Version 1.0 - © 2017, Powered By PivotByteWare Solutions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
+
+{% block js %}
+<script src="/plugins/bootmetro/js/jquery-1.10.0.min.js"></script>
+<script src="/plugins/bootmetro/js/min/bootstrap.min.js"></script>
+<script src="/plugins/bootmetro/js/min/bootmetro.min.js"></script>
+<script src="/plugins/jquery-loading-overlay/loadingoverlay.min.js"></script>
+<script src="/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/app.js"></script>
+{% endblock %}
+</body>
+</html>

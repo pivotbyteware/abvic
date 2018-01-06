@@ -1,0 +1,152 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="container-fluid" style=''>
+    <h2>
+        <i class='icon-plus'></i> Open New Customer Loan<br />
+        <small class=''>Fields marked with <span style='color: red'>'*'</span> are required!</small>
+    </h2>
+    
+</div>
+<div class="bg-white container-fluid form-container" style='border: 2px solid #bbb;'>
+    <form class="input-form" autocomplete="off" style='margin: 50px 10px 10px 10px' 
+        action="/customer-loans/open-new-loan/{{customer.id}}/init-loan-for-auth" method="post">
+
+        {% include 'includes/alerts.twig' %}
+        <div class="row-fluid">
+            <div class="span6">
+                <h3>Customer Details</h3>
+                <hr />
+                <div class="row-fluid">
+                    <div class="control-group span6" id="">
+                        <label for="">ID Number</label>
+                        <input type="text" class="input-xlarge" 
+                            value="{{idTypes[customer.id_type]}} / {{customer.id_number}}"
+                            disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span12" id="">
+                        <label for="">Customer Name</label>
+                        <input type="text" class="span12" 
+                            value="{{customer.first_name}} {{customer.middle_name}} {{customer.last_name}}"
+                            disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6" id="">
+                        <label for="">Phone/Mobile</label>
+                        <input type="text" class="input-xlarge" 
+                            value="{{customer.mobile1}}"
+                            disabled='' />
+                    </div>
+                    <div class="control-group span6" id="">
+                        <label for="">Email Address</label>
+                        <input type="text" class="input-xlarge" 
+                        value="{{customer.email1}}"
+                        disabled='' />
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span12" id="">
+                        <label for="">Physical Address</label>
+                        <input type="text" class="span12" 
+                            value="{{customer.address_line1}}"
+                            disabled='' />
+                    </div>
+                </div>
+            </div>
+            <div class="span6">
+                <h3>Bank Account Details</h3>
+                <hr />
+                <div class="row-fluid">
+                    <div class="control-group span6 {{(oldInput.hasError('bankAccountSortCode') ? 'error' : '')}}" id="bank-account-sort-code">
+                        <label for="">Sort Code *</label>
+                        <input type="text" class="input-xlarge"
+                                placeholder="Bank Account Sort Code" 
+                                name='bankAccountSortCode'
+                                value="{{oldInput.value('bankAccountSortCode')}}">
+                        <span id="" class="help-block">{{oldInput.error('bankAccountSortCode')}}</span>
+                    </div>
+                    <div class="control-group span6 {{(oldInput.hasError('bankAccountNumber') ? 'error' : '')}}" id="bank-account-number">
+                        <label for="">Account Number *</label>
+                        <input type="text" class="input-xlarge"
+                                placeholder="Bank Account Number"
+                                name='bankAccountNumber'
+                                value="{{oldInput.value('bankAccountNumber')}}">
+                        <span id="" class="help-block">{{oldInput.error('bankAccountNumber')}}</span>
+                    </div>
+                </div>
+                <br />
+                <br />
+
+                <h3>Loan Details</h3>
+                <hr />
+                <div class="row-fluid">
+                    <div class="control-group span6 {{(oldInput.hasError('loanType') ? 'error' : '')}}" id="loanType">
+                        <label for="">Loan Type *</label>
+                        <select class="input-xlarge" name='loanType'>
+                            <option value="MONTHLY" selected="">Monthly</option>
+                            <option value="INSTALMENT" >Intalment</option>
+                        </select>
+                        <span id="" class="help-block">{{oldInput.error('loanType')}}</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6 {{(oldInput.hasError('loanAmount') ? 'error' : '')}}" id="loan-amount">
+                        <label for="">Loan Amount *</label>
+                        <input type="text" class="input-xlarge"
+                                placeholder="Loan Amount"
+                                name='loanAmount'
+                                value="{{oldInput.value('loanAmount')}}">
+                        <span id="" class="help-block">{{oldInput.error('loanAmount')}}</span>
+                    </div>
+                    <div class="control-group span6 {{(oldInput.hasError('loanDuration') ? 'error' : '')}}" id="loan-duration">
+                        <label for="">Loan Duration *</label>
+                        <input type="text" class="input-xlarge"
+                                placeholder="Loan Duration"
+                                name='loanDuration'
+                                value="{{oldInput.value('loanDuration')}}">
+                        <span id="" class="help-block">{{oldInput.error('loanDuration')}}</span>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="control-group span6 {{(oldInput.hasError('interestRate') ? 'error' : '')}}" id="interest-rate">
+                        <label for="">Interest Rate *</label>
+                        <input type="text" class="input-xlarge"
+                                placeholder="Interest Rate"
+                                name='interestRate'
+                                value="{{oldInput.value('interestRate')}}">
+                        <span id="" class="help-block">{{oldInput.error('interestRate')}}</span>
+                    </div>
+                    <div class="control-group span6 {{(oldInput.hasError('repaymentDate') ? 'error' : '')}}" id="repayment-date">
+                        <label for="">Repayment Date *</label>
+                        <input type="text" class="input-xlarge datepicker"
+                                placeholder="Repayment Date"
+                                name='repaymentDate'
+                                value="{{oldInput.value('repaymentDate') != undefined ? oldInput.value('repaymentDate') : currentDate }}">
+                        <span id="" class="help-block">{{oldInput.error('repaymentDate')}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group span6">
+                <a type="submit" href='/customer-loans/open-new-loan' class="btn btn-danger">Cancel</a>
+                <button type="submit" class="btn btn-primary">Send for Authorization</button>
+            </div>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('.input-form').on('submit', function(){
+            $(this).LoadingOverlay("show");
+            return true;
+        });
+    </script>
+{% endblock %}

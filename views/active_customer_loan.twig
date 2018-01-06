@@ -1,0 +1,141 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class='container-fluid std-padding span12 offset0  bg-white'>
+    <div class='alert alert-warning'>
+        <h4>This customer has an unsettled loan detailed below.</h4>
+    </div>
+
+    <a href='/customer-loans/open-new-loan' class='btn btn-primary'><i class='icon-arrow-left'></i> Back</a> &nbsp; &nbsp;
+    <br />
+    <br />
+
+    <h2 class="block-inline">
+        Customer Details
+    </h2>
+    <br/>
+    <br/>
+    <table class='table table-striped table-bordered table-condensed bg-white'>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID Number</th>
+                <th>ID Type</th>
+                <th>Company Name</th>
+                <th>Email</th>
+                <th>Mobile/Phone</th>
+                <th>Physical Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{customer.first_name}} {{customer.middle_name}} {{customer.last_name}}</td>
+                <td>{{customer.id_number}}</td>
+                <td>{{customer.id_type}}</td>
+                <td>{{customer.company_name}}</td>
+                <td>{{customer.email1}}</td>
+                <td>{{customer.mobile1}}</td>
+                <td>{{customer.address_line1}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <h2 class="block-inline">
+        Loan Details
+    </h2>
+    <br/>
+    <br/>
+    <table class='table table-striped table-bordered table-condensed bg-white'>
+        <thead>
+            <tr>
+                <th>Loan Number</th>
+                <th>Loan Type</th>
+                <th>Date Opened</th>
+                <th>Bank Account Number</th>
+                <th>Bank Account Sort Code</th>
+                <th>Loan Status</th>
+                <th>Opened By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{activeLoan.loan_reference_number}}</td>
+                <td>{{activeLoan.loan_type}}</td>
+                <td>{{activeLoan.opening_date}}</td>
+                <td>{{activeLoan.customer_bank_account_number}}</td>
+                <td>{{activeLoan.customer_bank_account_sort_code}}</td>
+                <td>{{loanStatuses[activeLoan.loan_status]}}</td>
+                <td>{{activeLoan.creator.first_name}} {{activeLoan.creator.middle_name}} {{activeLoan.creator.last_name}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <h2 class="block-inline">
+        Loan Investment(s)
+    </h2>
+    <br/>
+    <br/>
+    <table class='table table-striped table-bordered table-condensed bg-white'>
+        <thead>
+            <tr>
+                <th>Investment Date</th>
+                <th>Investment Amount</th>
+                <th>Interest Rate</th>
+                <th>Interest Amount</th>
+                <th>Total Amount</th>
+                <th>Amount Paid</th>
+                <th>Duration</th>
+                <th>Repayment Date</th>
+                <th>Settlement Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for loanInvestment in loanInvestments %}
+            <tr class="{{loanInvestment.payment_status == 'OPEN' ? 'error' : 'success'}}">
+                <td>{{loanInvestment.investment_date}}</td>
+                <td>{{loanInvestment.investment_amount}}</td>
+                <td>{{loanInvestment.interest_rate}}%</td>
+                <td>{{loanInvestment.interest_amount}}</td>
+                <td>{{loanInvestment.total_amount}}</td>
+                <td>{{loanInvestment.payment_amount}}</td>
+                <td>{{loanInvestment.investment_duration}} month(s)</td>
+                <td>{{loanInvestment.repayment_date}}</td>
+                <td>{{loanInvestment.payment_status}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+
+    <h2 class="block-inline">
+        Customer Documents
+    </h2>
+    <br/>
+    <br/>
+
+    <table class='table table-striped table-bordered table-condensed bg-white'>
+        <thead>
+            <tr>
+                <th>Document Name</th>
+                <th>Preview</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in documents %}
+                <tr>
+                    <td>{{document.document_name}}</td>
+                    <td></td>
+                    <td>
+                        [ <a href='/files/customer-documents/{{customer.id}}/{{document.document_file_name}}' target='_blank'>Download</a> ]
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

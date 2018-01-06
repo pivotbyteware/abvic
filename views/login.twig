@@ -1,0 +1,72 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="span6 offset3">
+    <form class="span6 offset3" style="" method="POST" action="/login" autocomplete="off" id='login-form'>
+        <div class="" style="text-align: center; margin-bottom: 10px; margin-top: 100px">
+            <img src="/img/abvic-logo-1.jpeg" style="height: 100px; margin-bottom: 10px;" alt="Abvic Loan Manager" />
+            <h1 style='font-size: 24px; font-weight: bold; text-align: center;'>Abvic Loan Manager</h1>
+        </div>
+        
+        {% include 'includes/alerts.twig' %}
+
+        <div class="control-group">
+            <div class="controls">
+                <label>Login ID</label>
+                <input type="text" class="span12" id="login-id" name="login_id" placeholder="Login ID" 
+                    value="{{oldInput.value('login_id')}}">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <label>Login Password</label>
+                <input type="password" class="span12" id="login-password" name="login_password" placeholder="Login Password" value="P@ssword123@@">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary span12">Login</button>
+            </div>
+        </div>
+        <!--<div class="control-group">
+            <span class="help-block">
+                <a href="#" style="color: #7A9ADA; font-size:12px;">Forgot your password?</a>
+            </span>
+        </div-->
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        $('#login-form').on('submit', function(){
+            var loginId = $('#login-id');
+            var loginPassword = $('#login-password');
+            var errors = false;
+
+            if(loginId.val().trim() == ''){
+                loginId.parent().parent().addClass('error');
+                loginId.parent().find('.help-inline').text('Required Field!');
+
+                errors = true;
+            }
+
+            if(loginPassword.val().trim() == ''){
+                loginPassword.parent().parent().addClass('error');
+                loginPassword.parent().find('.help-inline').text('Required Field!');
+
+                errors = true;
+            }
+
+            if(errors){
+                return false;
+            }
+
+            return true;
+            
+        });
+
+        
+    </script>
+{% endblock %}

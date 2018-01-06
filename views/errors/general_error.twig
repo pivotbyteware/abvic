@@ -1,0 +1,15 @@
+{% extends 'layout.twig' %}
+
+{% block pageContent %}
+<div class="span6 offset3">
+    <h2>Unfortunately a server error has been encountered.</h2> 
+    <small>[{{message}}]</small>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type='text/javascript'>
+        
+    </script>
+{% endblock %}
